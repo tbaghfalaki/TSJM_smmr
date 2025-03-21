@@ -1,8 +1,9 @@
-### Parameter Estimation and Dynamic Prediction in Joint Models of Multiple Longitudinal Measures and Time-to-Event Outcome
-A two-stage strategy is employed to jointly model multiple longitudinal measures and time-to-event outcomes. The initial stage entails estimating K one-marker joint models for each marker. In the subsequent stage, time-varying covariates are integrated into a proportional hazard model for parameter estimation. Both phases adhere to the Bayesian paradigm. Furthermore, this approach enables the computation of dynamic predictions based on the estimated parameter values.
+### TSJM package
+On this page, you can access the R code accompanying our paper titled "A Two-stage Joint Modeling Approach for Multiple Longitudinal Markers and Time-to-event Data" authored by Baghfalaki, Hashemi, Helmer and Jacqmin-Gadda (2025).
 
-### Installation
-To acquire the latest development version of TSJM, you may utilize the following code snippet to install it directly from GitHub:
+### TSJM packege 
+To install the latest development version of the **TSJM** package and explore usage examples, visit:  
+👉 [https://github.com/tbaghfalaki/TSJM](https://github.com/tbaghfalaki/TSJM)
 
 ```
   # install.packages("devtools")
