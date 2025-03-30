@@ -218,7 +218,7 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
     surv.data$Id %in% INDVALID
   )
 ```
-# The "TRUE" model (gold-standard) estimates association parameters using both the true values of the parameters and the random effects from the mixed model.
+#### The "TRUE" model (gold-standard) estimates association parameters using both the true values of the parameters and the random effects from the mixed model.
 
 ```
   mureal1 <- mureal2 <- mureal3 <- mureal4 <- rep(0, length(long.data_t$Id))
@@ -337,9 +337,7 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
 
   Gold <- list(Est_gold = step2_gold$coefficients, CRgold = CRgold, CRI_gold = CRI_gold)
 ```
-
-
-
+#### R code for implementing the multi-marker joint model (MMJM)
 
 ```
   start2 <- Sys.time()
@@ -399,8 +397,10 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
   for (kk in 1:length(gamma_m)) {
     if (gammareal[kk] > Est_mul_l[kk] & gammareal[kk] < Est_mul_u[kk]) (CRM[kk] <- 1)
   }
+```
+#### Computing the dynamic prediction based on the multi-marker joint model (MMJM)
 
-  ###### DP ####
+```
   CRI_MMJM <- matrix(0, length(S), 2)
   for (kks in 1:length(S)) {
     s <- S[kks]
@@ -475,6 +475,10 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
   }
 
   MMJM <- list(Est_mul = Est_mul, CRM = CRM, CRI_MMJM = CRI_MMJM)
+```
+
+
+```
   ###### MTS ######
   ### @@@@@@@@@ usual two-step
   start2 <- Sys.time()
