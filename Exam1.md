@@ -194,7 +194,10 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
   }
   Delta <- nnet::class.ind(delta)
   table(delta)
+```
+##### Splitting data into training and validation sets for model evaluation
 
+```
   INDTRAIN <- 1:(nsujet / 2)
   INDVALID <- surv.data$Id[-INDTRAIN]
 
@@ -215,11 +218,10 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
     surv.data,
     surv.data$Id %in% INDVALID
   )
+```
+# The "TRUE" model (gold-standard) estimates association parameters using both the true values of the parameters and the random effects from the mixed model.
 
-
-
-  # ~~~~~~~~~~~~~~~~~~~~~~ Gold standard~~~~~~~~~~~~~~~~~~~~~
-  #######################################################################
+```
   mureal1 <- mureal2 <- mureal3 <- mureal4 <- rep(0, length(long.data_t$Id))
 
   for (i in 1:length(long.data_t$Id)) {
@@ -256,8 +258,9 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
   for (kk in 1:length(gammareal)) {
     if (gammareal[kk] > Est_gold_l[kk] & gammareal[kk] < Est_gold_u[kk]) (CRgold[kk] <- 1)
   }
-
-  ######################## DP   ########################
+```
+#### Computing the "TRUE" dynamic prediction based on the gold-standard model
+```
   # Calculate linear predictors for the validation set
   long.data_v <- long.data_v %>%
     mutate(
@@ -334,7 +337,12 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
 
 
   Gold <- list(Est_gold = step2_gold$coefficients, CRgold = CRgold, CRI_gold = CRI_gold)
-  ############################# MMJM   #############################
+```
+
+
+
+
+```
   start2 <- Sys.time()
   i.jags <- function() {
     list(
