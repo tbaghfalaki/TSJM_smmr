@@ -477,6 +477,7 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
   MMJM <- list(Est_mul = Est_mul, CRM = CRM, CRI_MMJM = CRI_MMJM)
 ```
 
+#### R code for implementing the multiple two-stage (MTS)
 
 ```
   ###### MTS ######
@@ -662,9 +663,10 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
   for (kk in 1:length(gammareal)) {
     if (gammareal[kk] > Est_mts_l[kk] & gammareal[kk] < Est_mts_u[kk]) (CRMTS[kk] <- 1)
   }
+```
+#### Computing the dynamic prediction based on  the multiple two-stage (MTS)
 
-  ################## DP ################
-  ######################## DP   ########################
+```
   ### generation of random effects
   CRI_MTS <- matrix(0, length(S), 2)
   for (kks in 1:length(S)) {
@@ -833,9 +835,10 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
   }
 
   MTS <- list(Est = cox_mts$coefficients, CRMTS = CRMTS, CRI_MTS = CRI_MTS)
+```
+#### R code for implementing TSJM (without TSJM R package)
 
-
-  ########### TSJM
+```
   start1 <- Sys.time()
 
   i.jags <- function() {
@@ -1045,9 +1048,10 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
   for (kk in 1:length(gammareal)) {
     if (gammareal[kk] > Est_unijm_l[kk] & gammareal[kk] < Est_unijm_u[kk]) (CRUJM1[kk] <- 1)
   }
+```
+#### Computing the dynamic prediction based on the TSJM
 
-  ################
-  ######################## DP   ########################
+```
   ### generation of random effects
   CRI_TSJM <- matrix(0, length(S), 2)
   for (kks in 1:length(S)) {
