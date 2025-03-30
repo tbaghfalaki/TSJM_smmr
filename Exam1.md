@@ -1,5 +1,4 @@
-
-
+### R code for simulation study to compare the proposed TSJM approach with the multi-marker joint modeling (MMJM) approach, multiple two-stage (MTS), and the two-stage approach
 
 ```
 rm(list = ls())
