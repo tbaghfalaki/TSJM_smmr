@@ -5,7 +5,7 @@ To install the latest development version of the **TSJM** package and explore us
 👉 [https://github.com/tbaghfalaki/TSJM](https://github.com/tbaghfalaki/TSJM)
 
 ### R code for simulation studies with comments
-The 
+The R code for simulation study is given by [here](/Exam1.md).
 
 
 #### R code 
