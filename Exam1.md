@@ -3,7 +3,9 @@
 
 ```
 rm(list = ls())
-# setwd("/Users/taban/Desktop/apr/Feb8")
+# setwd("/Users/taban/Desktop/apr/Feb8") # A path for saving all R code in there
+
+# Loading necessary R packages  
 library(MASS)
 library(R2jags)
 library(doParallel)
@@ -11,12 +13,13 @@ library(foreach)
 library(timeROC)
 library(survival)
 library(statmod)
-library(PermAlgo) # Permutation algorithm to generate survival times dependent on time-varying covariates
+library(PermAlgo)  
 library(mvtnorm)
 library(pec)
 library(dplyr)
 library(DPCri)
 source("DP4b.R")
+# Considering parallel computation for improved performance in simulation study
 cl <- makeCluster(10)
 registerDoParallel(cl)
 nsujet <- 1000
@@ -27,7 +30,10 @@ S <- c(0, 0.25, 0.5, 0.75)
 # real values of parameters
 NN <- 30
 resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dplyr", "R2jags", "statmod", "mvtnorm", "PermAlgo")) %dopar% {
-  # Y1 (continuous)
+```
+#### Generating data for joint modeling of multivariate longitudinal markers and time-to-event data. For more information, refer to: https://github.com/tbaghfalaki/JM-with-BUGS-and-JAGS/tree/main/multivariate
+
+```
   BetaLreal <- Beta1 <- Beta2 <- Beta3 <- Beta4 <- c(-0.5, 0.5, 0.5, 0.5)
   alpha <- 1
   sigma <- sqrt(0.5) # residual error
