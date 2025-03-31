@@ -4,7 +4,7 @@
 
 #### Generating the data as described in https://github.com/tbaghfalaki/TSJM_smmr/blob/main/Exam1.md.
 
-````
+```
 rm(list = ls())
 library(mvtnorm)
 library(R2jags)
