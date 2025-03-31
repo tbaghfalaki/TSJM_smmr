@@ -37,7 +37,8 @@ Data are generated using multi-marker joint models with $K=4$ longitudinal marke
 More specifically, the data generation models were as follows:
 
 
-$Y_{ik}(t)=\eta_{ik}(t|\bm{\beta}_k,\bm{b}_{ik})+\varepsilon_{ikt}$
+$Y_{ik}(t)=\eta_{ik}(t|\bm{\beta}_k,\bm{b}_{ik})+\epsilon_{ikt}$
+
 $=\beta_{0k}+\beta_{1k}t+\beta_{2k}x_{1i}+\beta_{3k}x_{2i}+b_{0ki}+b_{1ki} t+\varepsilon_{ikt}$
 
 
