@@ -1,5 +1,7 @@
 ### R code for simulation study to compare the proposed TSJM approach with the multi-marker joint modeling (MMJM) approach, multiple two-stage (MTS), and the two-stage approach
 
+Note that since the purpose of the Moreno-Betancur et al. (2018) approach is parameter estimation, and the available R package survtd only performs parameter estimation, we exclude the MB approach from this comparison. To implement this approach for the generated data, refer to ?.
+
 ```
 rm(list = ls())
 # setwd("/Users/taban/Desktop/apr/Feb8") # A path for saving all R code in there
