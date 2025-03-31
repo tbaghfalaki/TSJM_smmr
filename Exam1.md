@@ -19,8 +19,81 @@ library(dplyr)
 ###### Loading the DPCri R package to compute AUC and BS criteria from https://github.com/tbaghfalaki/DPCri
 library(DPCri) 
 ```
-#### reading DP4b function from
-???
+#### Loading the DP4b Function for Computing DP
+```
+DP4b=function(s,Dt,betaL1,betaL2,betaL3,betaL4,gamma,sigma,h,peice,Sigma,y1,y2,y3,y4,x1,x2,b){
+  lens=length(y1[is.na(y1)==FALSE])
+  Num=Den=chazn=chazn1=chazd=chazd1=c()
+  Alpha0=Alpha1=c()
+  
+  
+  delta=0
+  for(i in 1:n){
+    if((s+Dt)<=peice[1])(delta=1)
+    if((s+Dt)>peice[1] & (s+Dt)<= peice[2])(delta=2)
+    if((s+Dt)>peice[2] & (s+Dt)<= peice[3])(delta=3)
+    if((s+Dt)>peice[3] & (s+Dt)<= peice[4])(delta=4)
+    if((s+Dt)>peice[4])(delta=5)
+  }
+  
+  delta_2=0
+  for(i in 1:n){
+    if(s<=peice[1])(delta_2=1)
+    if(s>peice[1] & s<= peice[2])(delta_2=2)
+    if(s>peice[2] & s<= peice[3])(delta_2=3)
+    if(s>peice[3] & s<= peice[4])(delta_2=4)
+    if(s>peice[4])(delta_2=5)
+  }
+  
+  
+  Alpha0<- gamma[1]*(betaL1[1]+betaL1[3]*x1+betaL1[4]*x2+b[1])+
+    gamma[2]*(betaL2[1]+betaL2[3]*x1+betaL2[4]*x2+b[3])+
+    gamma[3]*(betaL3[1]+betaL3[3]*x1+betaL3[4]*x2+b[5])+
+    gamma[4]*(betaL4[1]+betaL4[3]*x1+betaL4[4]*x2+b[7])
+  
+  
+  Alpha1<- gamma[1]*(betaL1[2]+b[2])+gamma[2]*(betaL2[2]+b[4])+gamma[3]*(betaL3[2]+b[6])+gamma[4]*(betaL4[2]+b[8])
+  
+  
+  equals=function(a,b){
+    z=0
+    if(a==b)(z=1)
+    ;z
+  }
+  
+  chazn1<- h[1]*(exp(Alpha1*(s+Dt))-1)*equals(delta,1)+
+    (h[1]*(exp(Alpha1*peice[1])-1)+h[2]*(exp(Alpha1*(s+Dt))-exp(Alpha1*peice[1])))*equals(delta,2)+
+    (h[1]*(exp(Alpha1*peice[1])-1)+h[2]*(exp(Alpha1*peice[2])-exp(Alpha1*peice[1]))+h[3]*(exp(Alpha1*(s+Dt))-exp(Alpha1*peice[2])))*equals(delta,3)+
+    (h[1]*(exp(Alpha1*peice[1])-1)+h[2]*(exp(Alpha1*peice[2])-exp(Alpha1*peice[1]))+h[3]*(exp(Alpha1*peice[3])-exp(Alpha1*peice[2]))+
+       h[4]*(exp(Alpha1*(s+Dt))-exp(Alpha1*peice[3])))*equals(delta,4)+
+    (h[1]*(exp(Alpha1*peice[1])-1)+
+       h[2]*(exp(Alpha1*peice[2])-exp(Alpha1*peice[1]))+
+       h[3]*(exp(Alpha1*peice[3])-exp(Alpha1*peice[2]))+
+       h[4]*(exp(Alpha1*peice[4])-exp(Alpha1*peice[3]))+
+       h[5]*(exp(Alpha1*(s+Dt))-exp(Alpha1*peice[4])))*equals(delta,5)
+  
+  chazn<-exp(Alpha0)*chazn1/Alpha1
+  
+  Num=-chazn
+  ###########################
+  chazd1<- h[1]*(exp(Alpha1*s)-1)*equals(delta_2,1)+
+    (h[1]*(exp(Alpha1*peice[1])-1)+h[2]*(exp(Alpha1*s)-exp(Alpha1*peice[1])))*equals(delta_2,2)+
+    (h[1]*(exp(Alpha1*peice[1])-1)+h[2]*(exp(Alpha1*peice[2])-exp(Alpha1*peice[1]))+h[3]*(exp(Alpha1*s)-exp(Alpha1*peice[2])))*equals(delta_2,3)+
+    (h[1]*(exp(Alpha1*peice[1])-1)+h[2]*(exp(Alpha1*peice[2])-exp(Alpha1*peice[1]))+h[3]*(exp(Alpha1*peice[3])-exp(Alpha1*peice[2]))+h[4]*(exp(Alpha1*s)-exp(Alpha1*peice[3])))*equals(delta_2,4)+
+    (h[1]*(exp(Alpha1*peice[1])-1)+
+       h[2]*(exp(Alpha1*peice[2])-exp(Alpha1*peice[1]))+
+       h[3]*(exp(Alpha1*peice[3])-exp(Alpha1*peice[2]))+
+       h[4]*(exp(Alpha1*peice[4])-exp(Alpha1*peice[3]))+
+       h[5]*(exp(Alpha1*s)-exp(Alpha1*peice[4])))*equals(delta_2,5)
+  
+  chazd<-exp(Alpha0)*chazd1/Alpha1
+  Den=-chazd
+  
+  BB=mean(exp(Den))
+  BB[BB==0]=0.0001
+  ;mean(exp(Num))/BB
+}
+```
 
 
 #### Considering parallel computation for improved performance in simulation study
