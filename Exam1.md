@@ -37,7 +37,7 @@ Data are generated using multi-marker joint models with $K=4$ longitudinal marke
 More specifically, the data generation models were as follows:
 
 
-$Y_{ik}(t)=\eta_{ik}(t|\bm{\beta}_k,\bm{b}_{ik})+\epsilon_{ikt}$
+$Y_{ik}(t)=\eta_{ik}(t|\beta_k,b_{ik})+\epsilon_{ikt}$
 
 $=\beta_{0k}+\beta_{1k}t+\beta_{2k}x_{1i}+\beta_{3k}x_{2i}+b_{0ki}+b_{1ki} t+\varepsilon_{ikt}$
 
@@ -48,7 +48,7 @@ $x_1$
 is generated from a binary distribution with a success probability of 0.5, and 
 $x_2$ 
 is generated from a normal distribution with a mean of zero and a standard deviation of 0.5. Also, 
-$\bm{b}_i=(b_{01i},b_{11i},...,b_{04i},b_{14i})^{\top} \sim N(\bm{0},\bm{\Sigma}),$
+${b}_i=(b_{01i},b_{11i},...,b_{04i},b_{14i})^{\top} \sim N({0},{\Sigma}),$
 $i=1,...,n$ and $t=0,0.2,0.4,...,2$.
 
 ```
