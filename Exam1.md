@@ -362,6 +362,19 @@ The TRUE model involves estimating association parameters by using both the real
   Gold <- list(Est_gold = step2_gold$coefficients, CRgold = CRgold, CRI_gold = CRI_gold)
 ```
 #### R code for implementing the multi-marker joint model (MMJM)
+For MMJM a jags code as follows 
+
+# My Markdown File
+
+Here is some regular text.
+
+<div style="background-color: #f0f8ff; padding: 15px; border-radius: 8px; border: 1px solid #b0c4de;">
+  <strong>Note:</strong> This is a colorful box with a light blue background.
+</div>
+
+More text after the box.
+
+
 
 
 
