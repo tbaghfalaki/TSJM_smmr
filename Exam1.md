@@ -16,8 +16,13 @@ library(PermAlgo)
 library(mvtnorm)
 library(pec)
 library(dplyr)
-library(DPCri)
-source("DP4b.R")
+###### Loading the DPCri R package to compute AUC and BS criteria from https://github.com/tbaghfalaki/DPCri
+library(DPCri) 
+
+#### reading DP4b function from
+???
+
+
 # Considering parallel computation for improved performance in simulation study
 cl <- makeCluster(10)
 registerDoParallel(cl)
@@ -362,7 +367,7 @@ The TRUE model involves estimating association parameters by using both the real
   Gold <- list(Est_gold = step2_gold$coefficients, CRgold = CRgold, CRI_gold = CRI_gold)
 ```
 #### R code for implementing the multi-marker joint model (MMJM)
-For MMJM a jags code as follows 
+The JAGS code for MMJM is implemented as follows:
 
 ```
 model{
@@ -405,9 +410,6 @@ model{
       (h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[2])))*equals(delta[i,3],1)+
       (h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*s[3])-exp(Alpha1[i]*s[2]))+h[4]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[3])))*equals(delta[i,4],1)+
       (h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*s[3])-exp(Alpha1[i]*s[2]))+h[4]*(exp(Alpha1[i]*s[4])-exp(Alpha1[i]*s[3]))+h[5]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[4])))*equals(delta[i,5],1)
-    
-    
-    
     
     
     chaz[i]<-exp(Alpha0[i])*chaz2[i]/Alpha1[i]
@@ -457,21 +459,7 @@ model{
 }
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+The R code for implementing MMJM using the Rjags package is as follows:
 
 ```
   start2 <- Sys.time()
@@ -610,6 +598,20 @@ model{
 
   MMJM <- list(Est_mul = Est_mul, CRM = CRM, CRI_MMJM = CRI_MMJM)
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #### R code for implementing the multiple two-stage (MTS)
 
@@ -799,6 +801,13 @@ model{
   }
 ```
 #### Computing the dynamic prediction based on  the multiple two-stage (MTS)
+
+
+
+
+
+
+
 
 ```
   ### generation of random effects
@@ -1371,6 +1380,21 @@ model{
 stopCluster(cl)
 
 save(resultsss, file = "result_d1hh2.RData")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ```
