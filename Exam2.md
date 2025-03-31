@@ -1,8 +1,9 @@
 
-#### The Moreno-Betancur et al. (2018) approach
+### The Moreno-Betancur et al. (2018) approach
 
 
 #### Generating the data as described in https://github.com/tbaghfalaki/TSJM_smmr/blob/main/Exam1.md.
+
 ````
 rm(list = ls())
 library(mvtnorm)
