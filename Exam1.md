@@ -18,12 +18,13 @@ library(pec)
 library(dplyr)
 ###### Loading the DPCri R package to compute AUC and BS criteria from https://github.com/tbaghfalaki/DPCri
 library(DPCri) 
-
+```
 #### reading DP4b function from
 ???
 
 
 # Considering parallel computation for improved performance in simulation study
+```
 cl <- makeCluster(10)
 registerDoParallel(cl)
 nsujet <- 1000
