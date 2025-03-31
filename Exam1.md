@@ -35,12 +35,21 @@ resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dply
 
 Data are generated using multi-marker joint models with $K=4$ longitudinal markers and a survival model. To be able to compare the performance to that of MMJM and limit  computation time, the simulation scenario considered only four markers.
 More specifically, the data generation models were as follows:
-\begin{eqnarray}\label{gau}
-Y_{ik}(t)&=&\eta_{ik}(t|\bm{\beta}_k,\bm{b}_{ik})+\varepsilon_{ikt}\\
-&=&\beta_{0k}+\beta_{1k}t+\beta_{2k}x_{1i}+\beta_{3k}x_{2i}+b_{0ki}+b_{1ki} t+\varepsilon_{ikt},\nonumber
-\end{eqnarray}
-where $\varepsilon_{ikt} \sim N(0, \sigma_k^2)$,
-$x_1$ is generated from a binary distribution with a success probability of 0.5, and $x_2$ is generated from a normal distribution with a mean of zero and a standard deviation of 0.5. Also, $\bm{b}_i=(b_{01i},b_{11i},\ldots,b_{04i},b_{14i})^{\top} \sim N(\bm{0},\bm{\Sigma})$, $i=1,\ldots,n$ and $t=0,0.2,0.4,\ldots,2$.
+
+
+$Y_{ik}(t)=\eta_{ik}(t|\bm{\beta}_k,\bm{b}_{ik})+\varepsilon_{ikt}$
+$=\beta_{0k}+\beta_{1k}t+\beta_{2k}x_{1i}+\beta_{3k}x_{2i}+b_{0ki}+b_{1ki} t+\varepsilon_{ikt}$
+
+
+where 
+$\varepsilon_{ikt} \sim N(0, \sigma_k^2),$
+
+$x_1$ 
+
+is generated from a binary distribution with a success probability of 0.5, and 
+
+$x_2$ 
+is generated from a normal distribution with a mean of zero and a standard deviation of 0.5. Also, $\bm{b}_i=(b_{01i},b_{11i},\ldots,b_{04i},b_{14i})^{\top} \sim N(\bm{0},\bm{\Sigma})$, $i=1,\ldots,n$ and $t=0,0.2,0.4,\ldots,2$.
 
 ```
   BetaLreal <- Beta1 <- Beta2 <- Beta3 <- Beta4 <- c(-0.5, 0.5, 0.5, 0.5)
