@@ -241,7 +241,8 @@ For more information, refer to: https://github.com/tbaghfalaki/JM-with-BUGS-and-
     surv.data$Id %in% INDVALID
   )
 ```
-#### The "TRUE" model (gold-standard) estimates association parameters using both the true values of the parameters and the random effects from the mixed model.
+#### The "TRUE" model (gold-standard) 
+The TRUE model involves estimating association parameters by using both the real value of the parameters and the random effects from the mixed model.
 
 ```
   mureal1 <- mureal2 <- mureal3 <- mureal4 <- rep(0, length(long.data_t$Id))
@@ -281,7 +282,7 @@ For more information, refer to: https://github.com/tbaghfalaki/JM-with-BUGS-and-
     if (gammareal[kk] > Est_gold_l[kk] & gammareal[kk] < Est_gold_u[kk]) (CRgold[kk] <- 1)
   }
 ```
-#### Computing the "TRUE" dynamic prediction based on the gold-standard model
+#### Computing the "TRUE" dynamic prediction based on the gold-standard model.
 ```
   # Calculate linear predictors for the validation set
   long.data_v <- long.data_v %>%
@@ -361,6 +362,8 @@ For more information, refer to: https://github.com/tbaghfalaki/JM-with-BUGS-and-
   Gold <- list(Est_gold = step2_gold$coefficients, CRgold = CRgold, CRI_gold = CRI_gold)
 ```
 #### R code for implementing the multi-marker joint model (MMJM)
+
+
 
 ```
   start2 <- Sys.time()
