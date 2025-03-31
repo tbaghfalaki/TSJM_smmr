@@ -1096,6 +1096,72 @@ model{
 ```
 #### R code for implementing TSJM (without TSJM R package)
 
+The JAGS code (model.file <- "JM1p.txt") for univariate JM is implemented as follows:
+
+```
+model{
+  for(i in 1:n){
+    #Longitudinalobservations
+    for(j in 1:M[i]){
+      Y1[i,j]~dnorm(mu1[i,j],tau1)
+      mu1[i,j]<-inprod(betaL1[],XL1[i,j,])+inprod(b[i,1:2],ZL1[i,j,])
+    }
+    #Survival and censoring times
+    #Hazard function
+    Alpha0[i]<- gamma1*(betaL1[1]+betaL1[3]*x1[i]+betaL1[4]*x2[i]+b[i,1]) 
+    Alpha1[i]<- gamma1*(betaL1[2]+b[i,2]) 
+        linearpred1[i]<-betaL1[1]+betaL1[3]*x1[i]+betaL1[4]*x2[i]+b[i,1]+(betaL1[2]+b[i,2])*Time[i]
+  
+haz[i]<- (h[1]*equals(delta[i,1],1)+h[2]*equals(delta[i,2],1)+h[3]*equals(delta[i,3],1)+
+                   h[4]*equals(delta[i,4],1)+h[5]*equals(delta[i,5],1))*exp(Alpha0[i]+Alpha1[i]*Time[i])
+    #Cumulative hazard function 
+    chaz1[i]<-h[1]*Time[i]*equals(delta[i,1],1)+
+(h[1]*s[1]+h[2]*(Time[i]-s[1]))*equals(delta[i,2],1)+
+(h[1]*s[1]+h[2]*(s[2]-s[1])+h[3]*(Time[i]-s[2]))*equals(delta[i,3],1)+
+(h[1]*s[1]+h[2]*(s[2]-s[1])+h[3]*(s[3]-s[2])+h[4]*(Time[i]-s[3]))*equals(delta[i,4],1)+
+(h[1]*s[1]+h[2]*(s[2]-s[1])+h[3]*(s[3]-s[2])+h[4]*(s[4]-s[3])+h[5]*(Time[i]-s[4]))*equals(delta[i,5],1)
+chaz2[i]<- h[1]*(exp(Alpha1[i]*Time[i])-1)*equals(delta[i,1],1)+
+(h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[1])))*equals(delta[i,2],1)+
+(h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[2])))*equals(delta[i,3],1)+
+(h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*s[3])-exp(Alpha1[i]*s[2]))+h[4]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[3])))*equals(delta[i,4],1)+
+(h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*s[3])-exp(Alpha1[i]*s[2]))+h[4]*(exp(Alpha1[i]*s[4])-exp(Alpha1[i]*s[3]))+h[5]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[4])))*equals(delta[i,5],1)
+
+
+chaz[i]<-exp(Alpha0[i])*chaz2[i]/Alpha1[i]
+
+    #Log-survival function log(S)=-H(t) 
+    logSurv[i]<-  -chaz[i]
+
+
+    #Definition of the survival log-likelihood using zeros trick
+    phi[i]<-100000-death[i]*log(haz[i])-logSurv[i]
+    zeros[i]~dpois(phi[i])
+    #Random effects
+    b[i,1:Nb]~dmnorm(mub[],Omega[,])
+    
+  }
+  #Prior distributions
+  for(l in 1:NbetasL){
+    betaL1[l]~dnorm(0,0.001)
+    
+  }
+  
+ for(l in 1:J){
+    h[l]~dgamma(0.1,0.1)
+  }
+
+
+  gamma1~dnorm(0,0.001)
+  tau1~dgamma(0.01,0.01)
+  Omega[1:Nb,1:Nb]~dwish(V[,],Nb)
+  #Derive dquantity
+
+  sigma1<-1/tau1
+  Sigma[1:Nb,1:Nb]<-inverse(Omega[,])
+}
+```
+
+
 ```
   start1 <- Sys.time()
 
