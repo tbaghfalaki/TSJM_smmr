@@ -46,11 +46,14 @@ where
 $\varepsilon_{ikt} \sim N(0, \sigma_k^2),$
 
 $x_1$ 
-
 is generated from a binary distribution with a success probability of 0.5, and 
 
 $x_2$ 
-is generated from a normal distribution with a mean of zero and a standard deviation of 0.5. Also, $\bm{b}_i=(b_{01i},b_{11i},\ldots,b_{04i},b_{14i})^{\top} \sim N(\bm{0},\bm{\Sigma})$, $i=1,\ldots,n$ and $t=0,0.2,0.4,\ldots,2$.
+is generated from a normal distribution with a mean of zero and a standard deviation of 0.5. Also, 
+
+$\bm{b}_i=(b_{01i},b_{11i},\ldots,b_{04i},b_{14i})^{\top} \sim N(\bm{0},\bm{\Sigma}),$
+
+$i=1,\ldots,n$ and $t=0,0.2,0.4,\ldots,2$.
 
 ```
   BetaLreal <- Beta1 <- Beta2 <- Beta3 <- Beta4 <- c(-0.5, 0.5, 0.5, 0.5)
