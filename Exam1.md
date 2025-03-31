@@ -900,11 +900,28 @@ model{
 ```
 #### Computing the dynamic prediction based on  the multiple two-stage (MTS)
 
-
-b_sts.R
-
+The JAGS code (model.file <- "b_sts.R") for computing dynamic prediction is implemented as follows:
 
 
+```
+model{
+  for(i in 1:n){
+    #Longitudinal observations
+    for(j in 1:M[i]){
+      Y1[i,j]~dnorm(mu1[i,j],tau1)
+      mu1[i,j]<-inprod(betaL1[],XL1[i,j,])+inprod(b[i,1:2],ZL1[i,j,])
+      
+    }
+
+    b[i,1:Nb]~dmnorm(mub[],Omega[,])
+    
+  }
+
+  #Derive dquantity
+  tau1<-1/sigma1
+  Omega[1:2,1:2]<-inverse(Sigma[,])
+}
+```
 
 
 ```
@@ -1291,6 +1308,54 @@ b_sts.R
   }
 ```
 #### Computing the dynamic prediction based on the TSJM
+The JAGS code (model.file <- "b_unijm.R") for computing dynamic prediction is implemented as follows:
+```
+model{
+  for(i in 1:n){
+    #Longitudinalobservations
+    for(j in 1:M[i]){
+      Y1[i,j]~dnorm(mu1[i,j],tau1)
+      mu1[i,j]<-inprod(betaL1[],XL1[i,j,])+inprod(b[i,1:2],ZL1[i,j,])
+    }
+    #Survival and censoring times
+    #Hazard function
+    Alpha0[i]<- gamma1*(betaL1[1]+betaL1[3]*x1[i]+betaL1[4]*x2[i]+b[i,1]) 
+    Alpha1[i]<- gamma1*(betaL1[2]+b[i,2]) 
+
+    haz[i]<- (h[1]*equals(delta[i,1],1)+h[2]*equals(delta[i,2],1)+h[3]*equals(delta[i,3],1)+
+                h[4]*equals(delta[i,4],1)+h[5]*equals(delta[i,5],1))*exp(Alpha0[i]+Alpha1[i]*Time[i])
+    #Cumulative hazard function 
+    chaz1[i]<-h[1]*Time[i]*equals(delta[i,1],1)+
+      (h[1]*s[1]+h[2]*(Time[i]-s[1]))*equals(delta[i,2],1)+
+      (h[1]*s[1]+h[2]*(s[2]-s[1])+h[3]*(Time[i]-s[2]))*equals(delta[i,3],1)+
+      (h[1]*s[1]+h[2]*(s[2]-s[1])+h[3]*(s[3]-s[2])+h[4]*(Time[i]-s[3]))*equals(delta[i,4],1)+
+      (h[1]*s[1]+h[2]*(s[2]-s[1])+h[3]*(s[3]-s[2])+h[4]*(s[4]-s[3])+h[5]*(Time[i]-s[4]))*equals(delta[i,5],1)
+    chaz2[i]<- h[1]*(exp(Alpha1[i]*Time[i])-1)*equals(delta[i,1],1)+
+      (h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[1])))*equals(delta[i,2],1)+
+      (h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[2])))*equals(delta[i,3],1)+
+      (h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*s[3])-exp(Alpha1[i]*s[2]))+h[4]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[3])))*equals(delta[i,4],1)+
+      (h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*s[3])-exp(Alpha1[i]*s[2]))+h[4]*(exp(Alpha1[i]*s[4])-exp(Alpha1[i]*s[3]))+h[5]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[4])))*equals(delta[i,5],1)
+    
+    
+    chaz[i]<-exp(Alpha0[i])*chaz2[i]/Alpha1[i]
+    
+    #Log-survival function log(S)=-H(t) 
+    logSurv[i]<-  -chaz[i]
+    
+    
+    #Definition of the survival log-likelihood using zeros trick
+    phi[i]<-100000-death[i]*log(haz[i])-logSurv[i]
+    zeros[i]~dpois(phi[i])
+    #Random effects
+    b[i,1:2]~dmnorm(mub[],Omega[,])
+    
+  }
+
+  tau1<-1/sigma1
+  Omega[1:2,1:2]<-inverse(Sigma[,])
+}
+```
+
 
 ```
   ### generation of random effects
