@@ -30,7 +30,7 @@ S <- c(0, 0.25, 0.5, 0.75)
 NN <- 30
 resultsss <- foreach(ij = 1:NN, .packages = c("MASS", "survival", "DPCri", "dplyr", "R2jags", "statmod", "mvtnorm", "PermAlgo")) %dopar% {
 ```
-#### Generating data for joint modeling of multivariate longitudinal markers and time-to-event data. For more information, refer to: https://github.com/tbaghfalaki/JM-with-BUGS-and-JAGS/tree/main/multivariate
+#### Generating data for joint modeling of multivariate longitudinal markers and time-to-event data. 
 
 
 Data are generated using multi-marker joint models with $K=4$ longitudinal markers and a survival model. To be able to compare the performance to that of MMJM and limit  computation time, the simulation scenario considered only four markers.
@@ -49,6 +49,11 @@ $x_2$
 is generated from a normal distribution with a mean of zero and a standard deviation of 0.5. Also, 
 $b_i=(b_{01i},b_{11i},...,b_{04i},b_{14i})^{\top} \sim N(0,\Sigma),$
 $i=1,...,n$ and $t=0,0.2,0.4,...,2$.
+
+The time-to-event outcome was simulated using a proportional hazards model with a permutational algorithm, for generating data with time-dependent covariates. In our case, it depends on the current values of the K markers as follows:
+$\lambda(t)=\lambda_{0}(t) \exp (\sum_{k=1}^K \alpha_{k} \eta_{ik}(t|\beta_k,b_{ik})).$$
+
+For more information, refer to: https://github.com/tbaghfalaki/JM-with-BUGS-and-JAGS/tree/main/multivariate
 
 ```
   BetaLreal <- Beta1 <- Beta2 <- Beta3 <- Beta4 <- c(-0.5, 0.5, 0.5, 0.5)
