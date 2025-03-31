@@ -51,7 +51,7 @@ $b_i=(b_{01i},b_{11i},...,b_{04i},b_{14i})^{\top} \sim N(0,\Sigma),$
 $i=1,...,n$ and $t=0,0.2,0.4,...,2$.
 
 The time-to-event outcome was simulated using a proportional hazards model with a permutational algorithm, for generating data with time-dependent covariates. In our case, it depends on the current values of the K markers as follows:
-$\lambda(t)=\lambda_{0}(t) \exp (\sum_{k=1}^K \alpha_{k} \eta_{ik}(t|\beta_k,b_{ik})).$$
+$\lambda(t)=\lambda_{0}(t) \exp (\sum_{k=1}^K \alpha_{k} \eta_{ik}(t|\beta_k,b_{ik})).$
 
 For more information, refer to: https://github.com/tbaghfalaki/JM-with-BUGS-and-JAGS/tree/main/multivariate
 
@@ -217,7 +217,7 @@ For more information, refer to: https://github.com/tbaghfalaki/JM-with-BUGS-and-
   Delta <- nnet::class.ind(delta)
   table(delta)
 ```
-##### Splitting data into training and validation sets for model evaluation
+##### Splitting data into a learning sample of 500 subjects (50%) and a validation sample of 500 subjects. 
 
 ```
   INDTRAIN <- 1:(nsujet / 2)
