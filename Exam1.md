@@ -23,7 +23,7 @@ library(DPCri)
 ???
 
 
-# Considering parallel computation for improved performance in simulation study
+#### Considering parallel computation for improved performance in simulation study
 ```
 cl <- makeCluster(10)
 registerDoParallel(cl)
@@ -368,7 +368,7 @@ The TRUE model involves estimating association parameters by using both the real
   Gold <- list(Est_gold = step2_gold$coefficients, CRgold = CRgold, CRI_gold = CRI_gold)
 ```
 #### R code for implementing the multi-marker joint model (MMJM)
-The JAGS code for MMJM is implemented as follows:
+The JAGS code (model.file <- "jm4.R") for MMJM is implemented as follows:
 
 ```
 model{
@@ -522,6 +522,78 @@ The R code for implementing MMJM using the Rjags package is as follows:
   }
 ```
 #### Computing the dynamic prediction based on the multi-marker joint model (MMJM)
+The JAGS code (model.file <- "jm4b.R") for computing dynamic prediction is implemented as follows:
+
+```
+model{
+  for(i in 1:n){
+    #Longitudinalobservations
+    for(j in 1:M[i]){
+      Y1[i,j]~dnorm(mu1[i,j],tau1)
+      mu1[i,j]<-inprod(betaL1[],XL1[i,j,])+inprod(b[i,1:2],ZL1[i,j,])
+      Y2[i,j]~dnorm(mu2[i,j],tau2)
+      mu2[i,j]<-inprod(betaL2[],XL2[i,j,])+inprod(b[i,3:4],ZL2[i,j,])
+      Y3[i,j]~dnorm(mu3[i,j],tau3)
+      mu3[i,j]<-inprod(betaL3[],XL3[i,j,])+inprod(b[i,5:6],ZL3[i,j,])
+      Y4[i,j]~dnorm(mu4[i,j],tau4)
+      mu4[i,j]<-inprod(betaL4[],XL4[i,j,])+inprod(b[i,7:8],ZL4[i,j,])
+      
+    }
+    #Survival and censoring times
+    #Hazard function
+    
+    
+    Alpha0[i]<- gamma1*(betaL1[1]+betaL1[3]*x1[i]+betaL1[4]*x2[i]+b[i,1])+
+      gamma2*(betaL2[1]+betaL2[3]*x1[i]+betaL2[4]*x2[i]+b[i,3])+
+      gamma3*(betaL3[1]+betaL3[3]*x1[i]+betaL3[4]*x2[i]+b[i,5])+
+      gamma4*(betaL4[1]+betaL4[3]*x1[i]+betaL4[4]*x2[i]+b[i,7])
+    
+    Alpha1[i]<- gamma1*(betaL1[2]+b[i,2])+gamma2*(betaL2[2]+b[i,4])+gamma3*(betaL3[2]+b[i,6])+gamma4*(betaL4[2]+b[i,8])
+    
+    
+    
+    haz[i]<- (h[1]*equals(delta[i,1],1)+h[2]*equals(delta[i,2],1)+h[3]*equals(delta[i,3],1)+
+                h[4]*equals(delta[i,4],1)+h[5]*equals(delta[i,5],1))*exp(Alpha0[i]+Alpha1[i]*Time[i])
+    #Cumulative hazard function 
+    chaz1[i]<-h[1]*Time[i]*equals(delta[i,1],1)+
+      (h[1]*s[1]+h[2]*(Time[i]-s[1]))*equals(delta[i,2],1)+
+      (h[1]*s[1]+h[2]*(s[2]-s[1])+h[3]*(Time[i]-s[2]))*equals(delta[i,3],1)+
+      (h[1]*s[1]+h[2]*(s[2]-s[1])+h[3]*(s[3]-s[2])+h[4]*(Time[i]-s[3]))*equals(delta[i,4],1)+
+      (h[1]*s[1]+h[2]*(s[2]-s[1])+h[3]*(s[3]-s[2])+h[4]*(s[4]-s[3])+h[5]*(Time[i]-s[4]))*equals(delta[i,5],1)
+    chaz2[i]<- h[1]*(exp(Alpha1[i]*Time[i])-1)*equals(delta[i,1],1)+
+      (h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[1])))*equals(delta[i,2],1)+
+      (h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[2])))*equals(delta[i,3],1)+
+      (h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*s[3])-exp(Alpha1[i]*s[2]))+h[4]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[3])))*equals(delta[i,4],1)+
+      (h[1]*(exp(Alpha1[i]*s[1])-1)+h[2]*(exp(Alpha1[i]*s[2])-exp(Alpha1[i]*s[1]))+h[3]*(exp(Alpha1[i]*s[3])-exp(Alpha1[i]*s[2]))+h[4]*(exp(Alpha1[i]*s[4])-exp(Alpha1[i]*s[3]))+h[5]*(exp(Alpha1[i]*Time[i])-exp(Alpha1[i]*s[4])))*equals(delta[i,5],1)
+    
+    
+    
+    
+    
+    chaz[i]<-exp(Alpha0[i])*chaz2[i]/Alpha1[i]
+    
+    #Log-survival function log(S)=-H(t) 
+    logSurv[i]<-  -chaz[i]
+    #Definition of the survival log-likelihood using zeros trick
+    phi[i]<-100000-death[i]*log(haz[i])-logSurv[i]
+    zeros[i]~dpois(phi[i])
+    #Random effects
+    b[i,1:Nb]~dmnorm(mub[],Omega[,])
+    
+  }
+  #Prior distributions
+  
+  tau1<-1/sigma1
+  tau2<-1/sigma2
+  tau3<-1/sigma3
+  tau4<-1/sigma4
+  Omega[1:Nb,1:Nb]<-inverse(Sigma[,])
+  
+}
+
+```
+
+
 
 ```
   CRI_MMJM <- matrix(0, length(S), 2)
@@ -601,24 +673,49 @@ The R code for implementing MMJM using the Rjags package is as follows:
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #### R code for implementing the multiple two-stage (MTS)
+
+The JAGS code (model.file <- "mix.txt") for implementing mixed effect model is as follows:
+
+```
+model{
+  for(i in 1:n){
+    #Longitudinalobservations
+    for(j in 1:M[i]){
+      Y1[i,j]~dnorm(mu1[i,j],tau1)
+      mu1[i,j]<-inprod(betaL1[],XL1[i,j,])+inprod(b[i,1:2],ZL1[i,j,])
+      
+    }
+    #Survival and censoring times
+    #Hazard function
+            linearpred1[i]<-betaL1[1]+betaL1[3]*x1[i]+betaL1[4]*x2[i]+b[i,1]+(betaL1[2]+b[i,2])*Time[i]
+
+    
+    b[i,1:Nb]~dmnorm(mub[1:2],Omega[1:2,1:2])
+    
+  }
+  #Prior distributions
+  for(l in 1:NbetasL){
+    betaL1[l]~dnorm(0,0.001)
+    
+  }
+  
+  
+  tau1~dgamma(0.01,0.01)
+  
+  Omega[1:Nb,1:Nb]~dwish(V[,],Nb)
+  #Derive dquantity
+  
+  sigma1<-1/tau1
+  
+  Sigma[1:Nb,1:Nb]<-inverse(Omega[,])
+}
+```
+
+
 
 ```
   ###### MTS ######
-  ### @@@@@@@@@ usual two-step
   start2 <- Sys.time()
 
   i.jags <- function() {
@@ -804,7 +901,7 @@ The R code for implementing MMJM using the Rjags package is as follows:
 #### Computing the dynamic prediction based on  the multiple two-stage (MTS)
 
 
-
+b_sts.R
 
 
 
