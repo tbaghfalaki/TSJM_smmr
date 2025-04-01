@@ -1,4 +1,4 @@
-
+The R code for computing the computational time based on TSJM package. For this purpose we consider TSC function of TSJM package. Also, we consider 100 imputations for computationg statnaded deviation of the assoctian parameters. For more detail of this function refer to [here](https://github.com/tbaghfalaki/TSJM/blob/main/Exam3.md) and [here](https://github.com/tbaghfalaki/TSJM/blob/main/Exam4.md).
 
 
 ```
