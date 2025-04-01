@@ -8,10 +8,9 @@ To install the latest development version of the **TSJM** package and explore us
 The R code for simulation study is given by [here](/Exam1.md).
 
 
-#### R code for pararellization computatioanl time TSJM package and its dynamic prediction. 
+### Computational time of TSJM
+##### R code for pararellization computatioanl time TSJM package and its dynamic prediction. 
 The R code for the simulation study using the TSJM package can be found [here](/Exam3.md).
 
 
 
-### Computational time of TSJM
-To evaluate the computational time of the TSJM package for Two-Stage Joint Modeling through parallelization, we generate a single sample, as presented [here](/Exam1.md), and assess its performance with repetition [here](/Exam2.md).
