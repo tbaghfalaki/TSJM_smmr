@@ -14,3 +14,5 @@ The R code for the simulation study using the TSJM package can be found [here](/
 
 
 
+### Reference 
+Baghfalaki, T., Hashemi, R., Helmer, C., & Jacqmin-Gadda, H. (2024). A two-stage joint modeling approach for multiple longitudinal markers and time-to-event data. arXiv preprint arXiv:2412.05765.
