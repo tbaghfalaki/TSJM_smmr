@@ -4,7 +4,7 @@ On this page, you can access the R code accompanying our paper titled "A Two-sta
 To install the latest development version of the **TSJM** package and explore usage examples, visit:  
 👉 [https://github.com/tbaghfalaki/TSJM](https://github.com/tbaghfalaki/TSJM)
 
-### R code for simulation studies with comments
+### R code for simulation studies
 The R code for simulation study is given by [here](/Exam1.md).
 
 
