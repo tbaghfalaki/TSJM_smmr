@@ -8,7 +8,8 @@ To install the latest development version of the **TSJM** package and explore us
 The R code for simulation study is given by [here](/Exam1.md).
 
 
-#### R code 
+#### R code for pararellization computatioanl time TSJM package and its dynamic prediction. 
+The R code for the simulation study using the TSJM package can be found [here](/Exam3.md).
 
 
 
