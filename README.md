@@ -6,6 +6,7 @@ To install the latest development version of the **TSJM** package and explore us
 
 ### R code for simulation studies
 The R code for simulation study is given by [here](/Exam1.md).
+The R code for simulation study (block diagonal coavriance matrix of the random effects) is given by [here](/Exam1.md).
 
 
 ### Computational time of TSJM
