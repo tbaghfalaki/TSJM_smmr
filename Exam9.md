@@ -325,8 +325,4 @@ stopCluster(cl)
 
 save(resultsss, file = "BD3n1.RData")
 
-
-
-
-
 ```
